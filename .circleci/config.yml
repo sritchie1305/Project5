@@ -17,7 +17,13 @@ jobs:
           name: FAIL lint on the Dockerfile
           command: |          
             make lint
-            return 1
+            RESULT=$?
+            if [ ${RESULT} -eq 0 ]
+            then
+              echo "linting success"
+            else
+              echo "linting failed"
+            fi
 
 
 workflows:
