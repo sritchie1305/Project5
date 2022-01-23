@@ -8,65 +8,65 @@ jobs:
     - image: python:3.7.3-stretch
     working_directory: ~/repo
     steps:
-      - checkout
-      -run:
-        name: install dependencies
-        command: |
-          make install
-      -run:
-        name: lint Dockerfile
-        command: |
-          make lint
+    - checkout
+    -run:
+      name: install dependencies
+      command: |
+        make install
+    -run:
+      name: lint Dockerfile
+      command: |
+        make lint
 
   job-name-here:
     docker:
-      - image:
-      working_directory:
+    - image:
+    working_directory:
     steps:
-      - checkout
-      -run:
-        name:
-        command: |
+    - checkout
+    -run:
+      name:
+      command: |
 
   job-name-here:
     docker:
-      - image:
-      working_directory:
+    - image:
+    working_directory:
     steps:
-      - checkout
-      -run:
-        name:
-        command: |
+    - checkout
+    -run:
+      name:
+      command: |
 
   job-name-here:
     docker:
-      - image:
-      working_directory:
+    - image:
+    working_directory:
     steps:
-      - checkout
-      -run:
-        name:
-        command: |
+    - checkout
+    -run:
+      name:
+      command: |
 
   job-name-here:
     docker:
-      - image:
-      working_directory:
+    - image:
+    working_directory:
     steps:
-      - checkout
-      -run:
-        name:
-        command: |
+    - checkout
+    -run:
+      name:
+      command: |
 
   job-name-here:
     docker:
-      - image:
-      working_directory:
+    - image:
+    working_directory:
     steps:
-      - checkout
-      -run:
-        name:
-        command: |
+    - checkout
+    -run:
+      name:
+      command: |
 
 
 workflows:
