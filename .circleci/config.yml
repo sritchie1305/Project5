@@ -46,3 +46,6 @@ workflows:
   default:
     jobs:
       - linting-app-code
+      - push-docker-image-to-image-repo:
+          requires:
+            - linting-app-code
