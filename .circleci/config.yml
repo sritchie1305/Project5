@@ -3,29 +3,24 @@ version: 2.1
 commands:
 
 jobs:
-    check-docker-code:
+    linting-app-code:
       docker:
       - image: python:3.7.3-stretch
       working_directory: ~/repo
       steps:
       - checkout
       - run:
-          name: Installing Linters
+          name: Install dependencies
           command: |
             make install
       - run:
-          name: run lint on Dockerfile
+          name: FAIL lint on the Dockerfile
           command: |          
             make lint
-            RESULT=$?
-            if [ ${RESULT} -eq 0 ]; then
-              echo "successfully linted files - proceeding to build image"
-            else
-              echo "failed to lint files - please fix and try again"
-            fi
+            return 1
 
 
 workflows:
   default:
     jobs:
-      - check-docker-code
+      - linting-app-code
