@@ -20,9 +20,9 @@ jobs:
             RESULT=$?
             if [ ${RESULT} -eq 0 ]
             then
-              echo "linting success"
+              return 1
             else
-              echo "linting failed"
+              return 1
             fi
 
 
