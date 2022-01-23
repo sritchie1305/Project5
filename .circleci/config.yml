@@ -6,9 +6,9 @@ jobs:
 
     linting-app-code:
         docker:
-          - image: python:3.7.3-stretch
-          working_directory: ~/repo
-      steps:
+        - image: python:3.7.3-stretch
+        working_directory: ~/repo
+        steps:
         - checkout
         - run:
             name: install depencies
