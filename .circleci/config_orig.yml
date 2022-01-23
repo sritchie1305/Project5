@@ -1,0 +1,59 @@
+version: 2.1
+
+commands:
+
+jobs:
+
+    linting-app-code:
+        docker:
+          - image: python:3.7.3-stretch
+          working_directory: ~/repo
+        steps:
+          - checkout
+          - run:
+            name: install depencies
+            command: |
+                make install
+          -run: 
+            name: lint Dockerfile
+            command: |
+                make lint
+            
+                
+    
+    
+    push-docker-image-to-ecr:
+    
+    
+    create-new-kubernetes-cluster:
+    
+    
+    deploy-new-kubernetes-cluster:
+    
+    
+    test-new-app:
+    
+    
+    destroy-old-app:
+    
+
+workflows:
+    default:
+        jobs:
+            - linting-app-code
+            #- push-docker-image-to-ecr:
+                #requires:
+                    #- linting-app-code
+            #- create-new-kubernetes-cluster:
+                #requires:
+                    #- push-docker-image-to-ecr
+            #- deploy-new-kubernetes-cluster:
+                #requires:
+                    #- create-new-kubernetes-cluster
+            #- test-new-app:
+                #requires:
+                    #- deploy-new-kubernetes-cluster
+            #- destroy-old-app:
+                #requires:
+                    #- test-new-app
+
