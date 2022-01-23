@@ -18,65 +18,9 @@ jobs:
       command: |
         make lint
 
-  job-name-here:
-    docker:
-    - image:
-    working_directory:
-    steps:
-    - checkout
-    - run:
-        name:
-        command: |
-
-  job-name-here2:
-    docker:
-    - image:
-    working_directory:
-    steps:
-    - checkout
-    - run:
-        name:
-        command: |
-
-  job-name-here3:
-    docker:
-    - image:
-    working_directory:
-    steps:
-    - checkout
-    - run:
-        name:
-        command: |
-
-  job-name-here4:
-    docker:
-    - image:
-    working_directory:
-    steps:
-    - checkout
-    - run:
-        name:
-        command: |
-
-  job-name-here5:
-    docker:
-    - image:
-    working_directory:
-    steps:
-    - checkout
-    - run:
-        name:
-        command: |
 
 
 workflows:
   default:
     jobs:
       - linting-app-code
-      #- job-name-here:
-        #- requires:
-          #- previous-job-here
-      #- job-name-here:
-      #- job-name-here:
-      #- job-name-here:
-      #- job-name-here:
