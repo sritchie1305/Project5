@@ -9,11 +9,11 @@ jobs:
     working_directory: ~/repo
     steps:
     - checkout
-    -run:
+    - run:
       name: install dependencies
       command: |
         make install
-    -run:
+    - run:
       name: lint Dockerfile
       command: |
         make lint
@@ -24,9 +24,9 @@ jobs:
     working_directory:
     steps:
     - checkout
-    -run:
-      name:
-      command: |
+    - run:
+        name:
+        command: |
 
   job-name-here2:
     docker:
@@ -34,9 +34,9 @@ jobs:
     working_directory:
     steps:
     - checkout
-    -run:
-      name:
-      command: |
+    - run:
+        name:
+        command: |
 
   job-name-here3:
     docker:
@@ -44,9 +44,9 @@ jobs:
     working_directory:
     steps:
     - checkout
-    -run:
-      name:
-      command: |
+    - run:
+        name:
+        command: |
 
   job-name-here4:
     docker:
@@ -54,9 +54,9 @@ jobs:
     working_directory:
     steps:
     - checkout
-    -run:
-      name:
-      command: |
+    - run:
+        name:
+        command: |
 
   job-name-here5:
     docker:
@@ -64,9 +64,9 @@ jobs:
     working_directory:
     steps:
     - checkout
-    -run:
-      name:
-      command: |
+    - run:
+        name:
+        command: |
 
 
 workflows:
