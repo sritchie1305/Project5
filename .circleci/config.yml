@@ -12,12 +12,10 @@ jobs:
       - run:
           name: Installing Linters
           command: |
-            cd nginx_app
             make install
       - run:
           name: run lint on Dockerfile
-          command: |
-            cd nginx_app          
+          command: |          
             make lint
             RESULT=$?
             if [ ${RESULT} -eq 0 ]; then
