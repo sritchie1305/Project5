@@ -46,7 +46,7 @@ jobs:
           command: |          
             docker login -u DOCKER_USERNAME -p $DOCKER_ACCESS_TOKEN
             docker tag $DOCKER_IMAGE_NAME $DOCKER_USERNAME/project5:$CIRCLE_WORKFLOW_ID
-            docker push $DOCKERB_USERNAME/project4:$CIRCLE_WORKFLOW_ID
+            docker push $DOCKERB_USERNAME/project5:$CIRCLE_WORKFLOW_ID
 
 workflows:
   default:
