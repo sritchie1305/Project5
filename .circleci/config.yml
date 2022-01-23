@@ -28,7 +28,19 @@ jobs:
               echo "linting failed"
             fi
 
-
+    push-docker-image-to-image-repo:
+      docker:
+      - image: circleci/golang:1.15
+      working_directory: ~/repo
+      steps:
+      - setup_remote_docker:
+          version: 19.03.13
+      - checkout
+      - run:
+          name: Run Docker Build on the app
+          command: |
+            docker build --tag project5 .
+            docker image ls
 
 workflows:
   default:
