@@ -14,6 +14,6 @@ test:
 lint:
 	./hadolint Dockerfile
     #check what to lint
-	pylint --disable=R,C myrepolib cli web
+	pylint --disable=R,C, W1203 app.py
 
 all: install lint test
