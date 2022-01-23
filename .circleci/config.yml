@@ -6,15 +6,15 @@ jobs:
 
     linting-app-code:
         docker:
-        - image: python:3.7.3-stretch
-        working_directory: ~/repo
+          - image: python:3.7.3-stretch
+          working_directory: ~/repo
         steps:
-        - checkout
-        - run:
+          - checkout
+          - run:
             name: install depencies
             command: |
                 make install
-        -run: 
+          -run: 
             name: lint Dockerfile
             command: |
                 make lint
