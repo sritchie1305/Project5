@@ -1,0 +1,82 @@
+version: 2.1
+
+commands:
+
+jobs:
+  linting-app-code:
+    docker:
+      - image: python:3.7.3-stretch
+      working_directory: ~/repo
+    steps:
+      - checkout
+      -run:
+        name: install dependencies
+        command: |
+          make install
+      -run:
+        name: lint Dockerfile
+        command: |
+          make lint
+
+  job-name-here:
+    docker:
+      - image:
+      working_directory:
+    steps:
+      - checkout
+      -run:
+        name:
+        command: |
+
+  job-name-here:
+    docker:
+      - image:
+      working_directory:
+    steps:
+      - checkout
+      -run:
+        name:
+        command: |
+
+  job-name-here:
+    docker:
+      - image:
+      working_directory:
+    steps:
+      - checkout
+      -run:
+        name:
+        command: |
+
+  job-name-here:
+    docker:
+      - image:
+      working_directory:
+    steps:
+      - checkout
+      -run:
+        name:
+        command: |
+
+  job-name-here:
+    docker:
+      - image:
+      working_directory:
+    steps:
+      - checkout
+      -run:
+        name:
+        command: |
+
+
+workflows:
+  default:
+    jobs:
+      - linting-app-code
+      #- job-name-here:
+        #- requires:
+          #- previous-job-here
+      #- job-name-here:
+      #- job-name-here:
+      #- job-name-here:
+      #- job-name-here:
