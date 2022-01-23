@@ -1,4 +1,4 @@
-  job-name-here:
+  push-docker-image-to-ecr:
     docker:
     - image:
     working_directory:
@@ -8,7 +8,7 @@
         name:
         command: |
 
-  job-name-here2:
+  create-new-kubernetes-cluster:
     docker:
     - image:
     working_directory:
@@ -18,7 +18,7 @@
         name:
         command: |
 
-  job-name-here3:
+  deploy-new-kubernetes-cluster:
     docker:
     - image:
     working_directory:
@@ -28,7 +28,7 @@
         name:
         command: |
 
-  job-name-here4:
+  test-new-app:
     docker:
     - image:
     working_directory:
@@ -38,7 +38,7 @@
         name:
         command: |
 
-  job-name-here5:
+  destroy-old-app:
     docker:
     - image:
     working_directory:
@@ -53,10 +53,10 @@ workflows:
   default:
     jobs:
       - linting-app-code
-      #- job-name-here:
+      #- push-docker-image-to-ecr:
         #- requires:
-          #- previous-job-here
-      #- job-name-here:
-      #- job-name-here:
-      #- job-name-here:
-      #- job-name-here:
+          #- linting-app-code
+      #- create-new-kubernetes-cluster:
+      #- deploy-new-kubernetes-cluster:
+      #- test-new-app:
+      #- destroy-old-app

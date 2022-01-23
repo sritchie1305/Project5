@@ -12,10 +12,13 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            python3 -m venv venv
+            . venv/bin/activate
             make install
       - run:
-          name: FAIL lint on the Dockerfile
+          name: Lint the Dockerfile
           command: |          
+            . venv/bin/activate
             make lint
             RESULT=$?
             if [ ${RESULT} -eq 0 ]
@@ -24,6 +27,7 @@ jobs:
             else
               echo "linting failed"
             fi
+
 
 
 workflows:
