@@ -28,7 +28,7 @@ jobs:
       name:
       command: |
 
-  job-name-here:
+  job-name-here2:
     docker:
     - image:
     working_directory:
@@ -38,7 +38,7 @@ jobs:
       name:
       command: |
 
-  job-name-here:
+  job-name-here3:
     docker:
     - image:
     working_directory:
@@ -48,7 +48,7 @@ jobs:
       name:
       command: |
 
-  job-name-here:
+  job-name-here4:
     docker:
     - image:
     working_directory:
@@ -58,7 +58,7 @@ jobs:
       name:
       command: |
 
-  job-name-here:
+  job-name-here5:
     docker:
     - image:
     working_directory:
