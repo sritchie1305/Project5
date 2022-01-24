@@ -53,11 +53,6 @@ jobs:
     
     create-eks-cluster:
       executor: aws-eks/python3
-      parameters:
-        cluster-name:
-          description: |
-            project5
-          type: string
       steps:
         - checkout
         - aws-eks/install-aws-iam-authenticator:
@@ -79,7 +74,7 @@ jobs:
               $SUDO mv eksctl_download/eksctl /usr/local/bin/
               rmdir eksctl_download
         - aws-eks/create-cluster:
-            cluster-name: project5
+            cluster-name: project5 cluster
             skip-kubectl-install: false
             verbose: 3
             node-type: t2.micro
