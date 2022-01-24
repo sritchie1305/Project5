@@ -50,6 +50,42 @@ jobs:
             docker tag project5 $DOCKER_USERNAME/project5:$CIRCLE_WORKFLOW_ID
             #push the image to docker repo
             docker push $DOCKER_USERNAME/project5:$CIRCLE_WORKFLOW_ID
+    
+    create-eks-cluster:
+      executor: aws-eks/python3
+      parameters:
+        cluster-name:
+          description: |
+            K8s Project5 Cluster
+          type: string
+      steps:
+        - checkout
+        - aws-eks/install-aws-iam-authenticator:
+            release-tag: ''
+        - run:
+            name:
+            command: |
+              if which eksctl > /dev/null; then
+              echo "eksctl is already installed"
+              exit 0
+              fi
+              mkdir -p eksctl_download
+              curl --silent --location --retry 5 "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C eksctl_download
+              chmod +x eksctl_download/eksctl
+              SUDO=""
+              if [ $(id -u) -ne 0 ] && which sudo > /dev/null ; then
+              SUDO="sudo"
+              fi
+              $SUDO mv eksctl_download/eksctl /usr/local/bin/
+              rmdir eksctl_download
+        - aws-eks/create-cluster:
+            cluster-name: << parameters.cluster-name >>
+            skip-kubectl-install: false
+            verbose: 3
+            node-type: t2.micro
+            nodes-max: 2
+            ssh-access: false
+            ssh-public-key: ''
 
 workflows:
   default:
@@ -58,3 +94,6 @@ workflows:
       - push-docker-image-to-image-repo:
           requires:
             - linting-app-code
+      - create-eks-cluster:
+          requires:
+            - push-docker-image-to-image-repo
