@@ -55,8 +55,7 @@ jobs:
       executor: aws-eks/python3
       parameters:
         cluster-name:
-          description: |
-            K8s Project5 Cluster
+          description: K8s Project5 Cluster
           type: string
       steps:
         - checkout
@@ -79,7 +78,7 @@ jobs:
               $SUDO mv eksctl_download/eksctl /usr/local/bin/
               rmdir eksctl_download
         - aws-eks/create-cluster:
-            cluster-name: $CIRCLE_WORKFLOW_ID
+            cluster-name: << parameters.cluster-name >>
             skip-kubectl-install: false
             verbose: 3
             node-type: t2.micro
