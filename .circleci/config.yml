@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   aws-eks: circleci/aws-eks@1.0.0
+  kubernetes: circleci/kubernetes@0.11.1
 
 commands:
 
@@ -84,6 +85,35 @@ jobs:
             nodes-max: 2
             ssh-access: false
             ssh-public-key: ''
+    
+    deploy-new-eks-cluster:
+      executor: aws-eks/python3
+      steps:
+      - kubernetes/install
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: project5Cluster
+          install-kubectl: true
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: true
+          resource-file-path: deployment/deployment.yml
+          resource-name: deployment/project5
+
+    test-new-cluster:
+      executor: aws-eks/python3
+      steps:
+        - kubernetes/install
+        - aws-eks/update-kubeconfig-with-authenticator:
+            cluster-name: project5Cluster
+        - run:
+            name: check new cluster details
+            command: |
+              kubectl get services
+              kubectl get pods
+              kubectl get deployment
+              kubectl get nodes
+
+
+
 
 workflows:
   default:
@@ -95,3 +125,18 @@ workflows:
       - create-eks-cluster:
           requires:
             - push-docker-image-to-image-repo
+      - deploy-new-eks-cluster:
+          requires:
+            - create-eks-cluster
+      - aws-eks/update-container-image:
+          cluster-name: project5Cluster
+          container-image-updates: sritchie1305/project5:latest
+          record: true
+          requires:
+            - deploy-new-eks-cluster
+          resource-name: deployment/project5
+      - test-new-cluster:
+          requires:
+            - aws-eks/update-container-image
+
+

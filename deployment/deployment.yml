@@ -14,6 +14,11 @@ spec:
     metadata:
       labels:
         app: project5
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
     spec:
       containers:
       - name: project5
@@ -33,7 +38,8 @@ spec:
   selector:
     app: project5
   ports:
-    - name: http
+    - name: RCP
+    - protocol: TCP
       port: 8000
       targetPort: 80
   type: LoadBalancer
