@@ -55,7 +55,8 @@ jobs:
       executor: aws-eks/python3
       parameters:
         cluster-name:
-          description: K8s Project5 Cluster
+          description: |
+            project5
           type: string
       steps:
         - checkout
