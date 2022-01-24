@@ -79,7 +79,7 @@ jobs:
               $SUDO mv eksctl_download/eksctl /usr/local/bin/
               rmdir eksctl_download
         - aws-eks/create-cluster:
-            cluster-name: << parameters.cluster-name >>
+            cluster-name: $CIRCLE_WORKFLOW_ID
             skip-kubectl-install: false
             verbose: 3
             node-type: t2.micro
