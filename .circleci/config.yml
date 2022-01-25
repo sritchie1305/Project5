@@ -78,7 +78,7 @@ jobs:
               $SUDO mv eksctl_download/eksctl /usr/local/bin/
               rmdir eksctl_download
         - aws-eks/create-cluster:
-            cluster-name: project5Cluster1
+            cluster-name: Cluster-$CIRCLE_WORKFLOW_ID
             skip-kubectl-install: false
             verbose: 3
             node-type: t2.micro
@@ -92,7 +92,7 @@ jobs:
       - checkout
       - kubernetes/install
       - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: project5Cluster1
+          cluster-name: Cluster-$CIRCLE_WORKFLOW_ID
           install-kubectl: true
       - kubernetes/create-or-update-resource:
           get-rollout-status: false
@@ -104,7 +104,7 @@ jobs:
       steps:
         - kubernetes/install
         - aws-eks/update-kubeconfig-with-authenticator:
-            cluster-name: project5Cluster1
+            cluster-name: Cluster-$CIRCLE_WORKFLOW_ID
         - run:
             name: check new cluster details
             command: |
@@ -130,7 +130,7 @@ workflows:
           requires:
             - create-eks-cluster
       - aws-eks/update-container-image:
-          cluster-name: project5Cluster1
+          cluster-name: Cluster-$CIRCLE_WORKFLOW_ID
           container-image-updates: sritchie1305/project5:latest
           record: true
           requires:
