@@ -5,7 +5,25 @@ orbs:
   kubernetes: circleci/kubernetes@0.11.1
 
 commands:
-
+  install-eksctl:
+    description: install eksctl
+    steps:
+      - run:
+          name: install eksctl
+          command: |
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            mv /tmp/eksctl /usr/local/bin
+            eksctl version
+  install-aws:
+    description: install aws
+    steps:
+      - run:
+          name: install aws
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            ./aws/install
+            aws --version
 
 jobs:
     linting-app-code:
@@ -86,7 +104,6 @@ jobs:
             nodes-max: 2
             ssh-access: false
             ssh-public-key: ''
-      
     
     deploy-new-eks-cluster:
       executor: aws-eks/python3
@@ -131,13 +148,13 @@ workflows:
       - deploy-new-eks-cluster:
           requires:
             - create-eks-cluster
-      - aws-eks/update-container-image:
-          cluster-name: Cluster-$CIRCLE_WORKFLOW_ID
-          container-image-updates: sritchie1305/project5:$CIRCLE_WORKFLOW_ID
-          record: true
-          requires:
-            - deploy-new-eks-cluster
-          resource-name: deployment/project5
+      #- aws-eks/update-container-image:
+          #cluster-name: Cluster-$CIRCLE_WORKFLOW_ID
+          #container-image-updates: sritchie1305/project5:latest
+          #record: true
+          #requires:
+            #- deploy-new-eks-cluster
+          #resource-name: deployment/project5
       - test-new-cluster:
           requires:
             - deploy-new-eks-cluster
