@@ -95,7 +95,7 @@ jobs:
           cluster-name: project5Cluster1
           install-kubectl: true
       - kubernetes/create-or-update-resource:
-          get-rollout-status: true
+          get-rollout-status: false
           resource-file-path: deployment.yml
           resource-name: deployment/project5
 
