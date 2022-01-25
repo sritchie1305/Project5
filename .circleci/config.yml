@@ -140,6 +140,6 @@ workflows:
           resource-name: deployment/project5
       - test-new-cluster:
           requires:
-            - deploy-new-eks-cluster
+            - aws-eks/update-container-image
 
 
