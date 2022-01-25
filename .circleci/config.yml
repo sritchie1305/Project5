@@ -133,7 +133,7 @@ workflows:
             - create-eks-cluster
       - aws-eks/update-container-image:
           cluster-name: Cluster-$CIRCLE_WORKFLOW_ID
-          container-image-updates: sritchie1305/project5:$CIRCLE_WORKFLOW_ID
+          container-image-updates: project5=sritchie1305/project5:$CIRCLE_WORKFLOW_ID
           record: true
           requires:
             - deploy-new-eks-cluster
