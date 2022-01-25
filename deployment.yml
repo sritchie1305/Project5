@@ -10,15 +10,15 @@ spec:
     matchLabels:
       app: project5
   replicas: 2
-  template:
-    metadata:
-      labels:
-        app: project5
   strategy:
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
     type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: project5
     spec:
       containers:
       - name: project5
