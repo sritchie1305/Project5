@@ -37,9 +37,8 @@ metadata:
 spec:
   selector:
     app: project5
+  type: LoadBalancer
   ports:
-    - name: RCP
     - protocol: TCP
       port: 8000
       targetPort: 80
-  type: LoadBalancer
