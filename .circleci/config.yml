@@ -104,7 +104,7 @@ jobs:
       steps:
         - kubernetes/install
         - aws-eks/update-kubeconfig-with-authenticator:
-            cluster-name: project5Cluster
+            cluster-name: project5Cluster1
         - run:
             name: check new cluster details
             command: |
