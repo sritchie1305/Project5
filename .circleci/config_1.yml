@@ -5,25 +5,7 @@ orbs:
   kubernetes: circleci/kubernetes@0.11.1
 
 commands:
-  install-eksctl:
-    description: install eksctl
-    steps:
-      - run:
-          name: install eksctl
-          command: |
-            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-            mv /tmp/eksctl /usr/local/bin
-            eksctl version
-  install-aws:
-    description: install aws
-    steps:
-      - run:
-          name: install aws
-          command: |
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            ./aws/install
-            aws --version
+
 
 jobs:
     linting-app-code:
@@ -70,9 +52,9 @@ jobs:
             #login to docker        
             docker login --username $DOCKER_USERNAME --password $DOCKER_ACCESS_TOKEN
             #tag local image with unique circleci ID in prep for pushing to remote repo
-            docker tag project5 $DOCKER_USERNAME/project5:$CIRCLE_WORKFLOW_ID
+            docker tag project5 $DOCKER_USERNAME/project5:${CIRCLE_WORKFLOW_ID:0:7}
             #push the image to docker repo
-            docker push $DOCKER_USERNAME/project5:$CIRCLE_WORKFLOW_ID
+            docker push $DOCKER_USERNAME/project5:${CIRCLE_WORKFLOW_ID:0:7}
     
     create-eks-cluster:
       executor: aws-eks/python3
@@ -97,13 +79,14 @@ jobs:
               $SUDO mv eksctl_download/eksctl /usr/local/bin/
               rmdir eksctl_download
         - aws-eks/create-cluster:
-            cluster-name: Cluster-$CIRCLE_WORKFLOW_ID
+            cluster-name: Cluster-${CIRCLE_WORKFLOW_ID:0:7}
             skip-kubectl-install: false
             verbose: 3
             node-type: t2.micro
             nodes-max: 2
             ssh-access: false
             ssh-public-key: ''
+      
     
     deploy-new-eks-cluster:
       executor: aws-eks/python3
@@ -111,7 +94,7 @@ jobs:
       - checkout
       - kubernetes/install
       - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: Cluster-$CIRCLE_WORKFLOW_ID
+          cluster-name: Cluster-${CIRCLE_WORKFLOW_ID:0:7}
           install-kubectl: true
       - kubernetes/create-or-update-resource:
           get-rollout-status: false
@@ -123,7 +106,7 @@ jobs:
       steps:
         - kubernetes/install
         - aws-eks/update-kubeconfig-with-authenticator:
-            cluster-name: Cluster-$CIRCLE_WORKFLOW_ID
+            cluster-name: Cluster-${CIRCLE_WORKFLOW_ID:0:7}
         - run:
             name: check new cluster details
             command: |
@@ -148,15 +131,15 @@ workflows:
       - deploy-new-eks-cluster:
           requires:
             - create-eks-cluster
-      #- aws-eks/update-container-image:
-          #cluster-name: Cluster-$CIRCLE_WORKFLOW_ID
-          #container-image-updates: sritchie1305/project5:latest
-          #record: true
-          #requires:
-            #- deploy-new-eks-cluster
-          #resource-name: deployment/project5
-      - test-new-cluster:
+      - aws-eks/update-container-image:
+          cluster-name: Cluster-${CIRCLE_WORKFLOW_ID:0:7}
+          container-image-updates: project5=sritchie1305/project5:latest
+          record: true
           requires:
             - deploy-new-eks-cluster
+          resource-name: deployment/project5
+      - test-new-cluster:
+          requires:
+            - aws-eks/update-container-image
 
 

@@ -32,7 +32,7 @@ jobs:
             else
               echo "linting failed"
             fi
-
+    # removed from workflow as circleci has a remote docker outage
     push-docker-image-to-image-repo:
       docker:
       - image: circleci/golang:1.15
@@ -99,7 +99,7 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: false
           resource-file-path: deployment.yml
-          resource-name: deployment/project5
+          resource-name: deployment/crclci
 
     test-new-cluster:
       executor: aws-eks/python3
@@ -122,9 +122,9 @@ workflows:
   default:
     jobs:
       - linting-app-code
-      - push-docker-image-to-image-repo:
-          requires:
-            - linting-app-code
+      #- push-docker-image-to-image-repo:
+          #requires:
+            #- linting-app-code
       - create-eks-cluster:
           requires:
             - push-docker-image-to-image-repo
@@ -133,11 +133,11 @@ workflows:
             - create-eks-cluster
       - aws-eks/update-container-image:
           cluster-name: Cluster-${CIRCLE_WORKFLOW_ID:0:7}
-          container-image-updates: project5=sritchie1305/project5:latest
+          container-image-updates: crclci=sritchie1305/crclci:latest
           record: true
           requires:
             - deploy-new-eks-cluster
-          resource-name: deployment/project5
+          resource-name: deployment/crclci
       - test-new-cluster:
           requires:
             - aws-eks/update-container-image
