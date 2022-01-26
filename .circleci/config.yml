@@ -125,7 +125,7 @@ workflows:
       #- push-docker-image-to-image-repo:
           #requires:
             #- linting-app-code
-      - create-eks-cluster:
+      - create-eks-cluster
           #requires:
             #- push-docker-image-to-image-repo
       - deploy-new-eks-cluster:
