@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: project5
-        image: sritchie1305/project5
+        image: sritchie1305/project5:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -39,6 +39,7 @@ spec:
     app: project5
   type: LoadBalancer
   ports:
-    - protocol: TCP
-      port: 8000
+    - name: http
+      protocol: TCP
+      port: 15444
       targetPort: 80
