@@ -126,8 +126,8 @@ workflows:
           #requires:
             #- linting-app-code
       - create-eks-cluster:
-          requires:
-            - push-docker-image-to-image-repo
+          #requires:
+            #- push-docker-image-to-image-repo
       - deploy-new-eks-cluster:
           requires:
             - create-eks-cluster
