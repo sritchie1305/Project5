@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: project5
-        image: sritchie1305/project5:latest
+        image: sritchie1305/project5:$CIRCLE_WORKFLOW_ID
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -41,5 +41,5 @@ spec:
   ports:
     - name: http
       protocol: TCP
-      port: 15444
+      port: 8000
       targetPort: 80
