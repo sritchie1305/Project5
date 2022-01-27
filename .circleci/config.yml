@@ -52,7 +52,7 @@ jobs:
             #login to docker        
             docker login --username $DOCKER_USERNAME --password $DOCKER_ACCESS_TOKEN
             #tag local image with unique circleci ID in prep for pushing to remote repo
-            docker tag project5 $DOCKER_USERNAME/project5:${CIRCLE_WORKFLOW_ID:0:7},latest
+            docker tag project5 $DOCKER_USERNAME/project5:latest
             #push the image to docker repo
             docker push $DOCKER_USERNAME/project5:${CIRCLE_WORKFLOW_ID:0:7}
     
