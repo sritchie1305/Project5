@@ -133,26 +133,26 @@ jobs:
         - checkout
         - attach_workspace:
             at: /tmp/project5
-      - run:
-          name: install dependencies
+        - run:
+            name: install dependencies
+            command: |
+              apk add --update curl
+        - run:
+          name: smoke test app via LB IP
           command: |
-            apk add --update curl
-      - run:
-        name: smoke test app via LB IP
-        command: |
-          #Echo full URL in test
-          export URL="http://"$(cat /tmp/project5/LB_IP.txt)":8000"
-          echo $URL
+            #Echo full URL in test
+            export URL="http://"$(cat /tmp/project5/LB_IP.txt)":8000"
+            echo $URL
 
-          #test URL
-          if curl ${URL} | grep "Steven"
-          then
-            echo "App online"
-            return 0
-          else
-            echo "App offline"
-            return 1
-          fi
+            #test URL
+            if curl ${URL} | grep "Steven"
+            then
+              echo "App online"
+              return 0
+            else
+              echo "App offline"
+              return 1
+            fi
 
 
 
