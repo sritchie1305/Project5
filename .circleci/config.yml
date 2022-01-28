@@ -137,7 +137,7 @@ jobs:
           name: install dependencies
           command: |
             apk add --update curl
-      run:
+      - run:
         name: smoke test app via LB IP
         command: |
           #Echo full URL in test
