@@ -3,9 +3,20 @@ version: 2.1
 orbs:
   aws-eks: circleci/aws-eks@1.0.0
   kubernetes: circleci/kubernetes@0.11.1
-  docker: circleci/docker@1.6.0
 
 commands:
+    destroy-env:
+    description: Destroy cluster on fail
+    steps:
+      - run:
+          name: Destroy all infrastructure
+          when: on_fail
+          command: |
+            aws eks update-kubeconfig --name="Cluster-${CIRCLE_WORKFLOW_ID:0:7}"
+            export KUBECONFIG=/root/.kube/config
+            kubectl get svc
+            kubectl delete -f deployment/
+            eksctl delete cluster Cluster-${CIRCLE_WORKFLOW_ID:0:7}
 
 
 jobs:
@@ -87,6 +98,7 @@ jobs:
             nodes-max: 2
             ssh-access: false
             ssh-public-key: ''
+        - destroy-env
       
     
     deploy-new-eks-cluster:
@@ -101,6 +113,7 @@ jobs:
           get-rollout-status: false
           resource-file-path: deployment.yml
           resource-name: deployment/project5
+      - destroy-env
 
     test-new-cluster:
       executor: aws-eks/python3
@@ -115,52 +128,7 @@ jobs:
               kubectl get pods
               kubectl get deployment
               kubectl get nodes
-
-    Retrieve-LB-URL:
-      docker:
-        - image: alpine/k8s:1.15.12
-      working_directory: /tmp/project5
-      steps:
-        - checkout
-        - run:
-            name: add LB IP to text file
-            command: |
-              echo "$(kubectl get services project5 --output jsonpath='{.status.loadBalancer.ingress[0].hostname}')" > LB_IP.txt
-              cat LB_IP.txt
-        - persist_to_workspace:
-            root: /tmp/project5
-            paths:
-              - LB_IP.txt
-
-    test-LB-URL:
-      docker:
-        - image: python:3.7-alpine3.11
-      steps:
-        - checkout
-        - attach_workspace:
-            at: /tmp/project5
-        - run:
-            name: install dependencies
-            command: |
-              apk add --update curl
-        - run:
-            name: smoke test app via LB IP
-            command: |
-              #Echo full URL in test
-              export URL="http://"$(cat /tmp/project5/LB_IP.txt)":8000"
-              echo $URL
-
-              #test URL
-              if curl ${URL} | grep "Steven"
-              then
-                echo "App online"
-                return 0
-              else
-                echo "App offline"
-                return 1
-              fi
-
-
+        - destroy-env
 
 
 workflows:
@@ -179,11 +147,3 @@ workflows:
       - test-new-cluster:
           requires:
             - deploy-new-eks-cluster
-      - Retrieve-LB-URL:
-          requires:
-            - test-new-cluster
-      - test-LB-URL:
-          requires:
-            - Retrieve-LB-URL
-
-
