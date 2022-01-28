@@ -6,17 +6,17 @@ orbs:
 
 commands:
     destroy-env:
-    description: Destroy cluster on fail
-    steps:
-      - run:
-          name: Destroy all infrastructure
-          when: on_fail
-          command: |
-            aws eks update-kubeconfig --name="Cluster-${CIRCLE_WORKFLOW_ID:0:7}"
-            export KUBECONFIG=/root/.kube/config
-            kubectl get svc
-            kubectl delete -f deployment/
-            eksctl delete cluster Cluster-${CIRCLE_WORKFLOW_ID:0:7}
+      description: Destroy cluster on fail
+      steps:
+        - run:
+            name: Destroy all infrastructure
+            when: on_fail
+            command: |
+              aws eks update-kubeconfig --name="Cluster-${CIRCLE_WORKFLOW_ID:0:7}"
+              export KUBECONFIG=/root/.kube/config
+              kubectl get svc
+              kubectl delete -f deployment/
+              eksctl delete cluster Cluster-${CIRCLE_WORKFLOW_ID:0:7}
 
 
 jobs:
