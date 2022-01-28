@@ -104,7 +104,6 @@ jobs:
 
     test-new-cluster:
       executor: aws-eks/python3
-      working_directory: /tmp/project5
       steps:
         - kubernetes/install
         - aws-eks/update-kubeconfig-with-authenticator:
@@ -116,6 +115,11 @@ jobs:
               kubectl get pods
               kubectl get deployment
               kubectl get nodes
+
+    Retrieve-LB-URL:
+      docker:
+        - image: alpine/k8s:1.15.12
+      working_directory: /tmp/project5
         - run:
             name: add LB IP to text file
             command: |
@@ -173,8 +177,11 @@ workflows:
       - test-new-cluster:
           requires:
             - deploy-new-eks-cluster
-      - test-LB-URL:
+      - Retrieve-LB-URL:
           requires:
             - test-new-cluster
+      - test-LB-URL:
+          requires:
+            - Retrieve-LB-URL
 
 
