@@ -120,6 +120,8 @@ jobs:
       docker:
         - image: alpine/k8s:1.15.12
       working_directory: /tmp/project5
+      steps:
+        - checkout
         - run:
             name: add LB IP to text file
             command: |
