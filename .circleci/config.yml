@@ -131,13 +131,6 @@ workflows:
       - deploy-new-eks-cluster:
           requires:
             - create-eks-cluster
-      #- aws-eks/update-container-image:
-          #cluster-name: Cluster-${CIRCLE_WORKFLOW_ID:0:7}
-          #container-image-updates: project5=sritchie1305/project5:latest
-          #record: true
-          #requires:
-            #- deploy-new-eks-cluster
-          #resource-name: deployment/project5
       - test-new-cluster:
           requires:
             - deploy-new-eks-cluster
